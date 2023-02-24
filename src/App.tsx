@@ -20,9 +20,9 @@ function App() {
 
   return (
     <div className="App">
- 
+      <p>+1 every second to mimic incomming WS messages</p>
       <p>{counter}</p>
-      <button onClick={addCounter}>+</button>
+      <button onClick={addCounter}>+100</button>
     </div>
   );
 }
