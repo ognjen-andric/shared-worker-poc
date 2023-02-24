@@ -1,24 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {useState} from 'react';
+import { WebsocketWorker } from './service/ws-worker';
 
 function App() {
+  const [counter, setCounter] = useState<number>(0);
+  const worker =  WebsocketWorker;
+  
+  const addCounter = () => {
+    console.log('sending updated value by 100');
+    worker.port.postMessage({
+      event: 'incrementGlobalCounter',
+      payload: 100
+    });
+  }
+  worker.port.onmessage = (e) => {
+    console.log('Received value '+e.data.payload+ ' from worker.');
+    setCounter(e.data.payload);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+ 
+      <p>{counter}</p>
+      <button onClick={addCounter}>+</button>
     </div>
   );
 }
